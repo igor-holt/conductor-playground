@@ -1,0 +1,35 @@
+name: deploy-apps
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+      GENESIS_API_BASE_URL: ${{ secrets.STAGING_WORKER_URL }}
+      GCP_REGION: us-central1
+    steps:
+      - uses: actions/checkout@v4
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+      - uses: google-github-actions/setup-gcloud@v2
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.27.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: gcloud builds submit . --tag us-central1-docker.pkg.dev/${PROJECT_ID}/genesis/genesis-chatgpt-mcp:latest --file apps/chatgpt-mcp/Dockerfile
+      - run: gcloud builds submit . --tag us-central1-docker.pkg.dev/${PROJECT_ID}/genesis/genesis-operator-web:latest --file apps/operator-web/Dockerfile
+      - run: envsubst < infra/chatgpt-mcp-service.yaml > /tmp/chatgpt-mcp-service.yaml
+      - run: envsubst < infra/operator-web-service.yaml > /tmp/operator-web-service.yaml
+      - run: gcloud run services replace /tmp/chatgpt-mcp-service.yaml --region ${GCP_REGION}
+      - run: gcloud run services replace /tmp/operator-web-service.yaml --region ${GCP_REGION}
+      - run: curl -fsSL "$(gcloud run services describe genesis-chatgpt-mcp --region ${GCP_REGION} --format='value(status.url)')/healthz"
+      - run: curl -fsSL "$(gcloud run services describe genesis-operator-web --region ${GCP_REGION} --format='value(status.url)')"

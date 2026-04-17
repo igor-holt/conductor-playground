@@ -1,0 +1,56 @@
+name = "genesis-retraining-worker"
+main = "src/index.ts"
+compatibility_date = "2024-04-13"
+
+[vars]
+ENVIRONMENT = "development"
+OPENAI_BASE_URL = "https://api.openai.com/v1"
+ROUTER_MODEL = "gpt-5-mini"
+
+[[d1_databases]]
+binding = "genesis_seismic_log"
+database_name = "genesis-seismic-log"
+database_id = "local-dev-database-id"
+
+[[kv_namespaces]]
+binding = "prompt_ledger_kv"
+id = "local-dev-kv-id"
+preview_id = "local-dev-kv-preview-id"
+
+[[kv_namespaces]]
+binding = "API_KEYS"
+id = "local-api-keys-id"
+preview_id = "local-api-keys-preview-id"
+
+[[kv_namespaces]]
+binding = "METER_CURSOR"
+id = "local-meter-cursor-id"
+preview_id = "local-meter-cursor-preview-id"
+
+[triggers]
+crons = ["0 * * * *"]
+
+[env.staging]
+name = "genesis-retraining-worker-staging"
+
+[env.staging.vars]
+ENVIRONMENT = "staging"
+OPENAI_BASE_URL = "https://api.openai.com/v1"
+ROUTER_MODEL = "gpt-5-mini"
+
+[[env.staging.d1_databases]]
+binding = "genesis_seismic_log"
+database_name = "genesis-seismic-log-staging"
+database_id = "b58837fa-20e1-4653-a3ad-8d3cc9846d09"
+
+[[env.staging.kv_namespaces]]
+binding = "prompt_ledger_kv"
+id = "a6846e25c2b84bfeae0bbc53cd2bc4d7"
+
+[[env.staging.kv_namespaces]]
+binding = "API_KEYS"
+id = "ef0646a7f9414c29bf152acabb337186"
+
+[[env.staging.kv_namespaces]]
+binding = "METER_CURSOR"
+id = "59154f57424e405c83de5c6394395479"

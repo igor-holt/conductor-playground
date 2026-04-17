@@ -12,6 +12,12 @@
 
 # testing
 /coverage
+/dist
+/tmp
+/output
+/packages/puf-harness/.venv
+/packages/puf-harness/.pytest_cache
+/apps/chatgpt-mcp/.mcp
 
 # next.js
 /.next/
@@ -32,6 +38,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # vercel
 .vercel

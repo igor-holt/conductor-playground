@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Genesis Conductor Monorepo
 
-## Getting Started
+Integrated phase-1 delivery for:
 
-First, run the development server:
+- A Cloudflare retraining worker with prompt ledger state, proposer/watchdog logic, and rollback audit.
+- A typed CLI (`genesis-conductor`) that is the only phase-1 write surface.
+- A read-only ChatGPT MCP app and Next.js operator dashboard built on the same contracts.
+- A sim-first eta_thermo harness with hash-only artifact emission.
+- Local docs, notebooks, CI, and deployment scaffolding.
+
+## Workspace Layout
+
+- `apps/operator-web`: Next.js 16 operator dashboard
+- `apps/chatgpt-mcp`: Node MCP server for ChatGPT developer mode
+- `packages/contracts`: shared Zod schemas and seeded mock data
+- `packages/retraining-worker`: Cloudflare Worker + D1 migrations + tests
+- `packages/genesis-cli`: composable CLI for read paths and dry-run writes
+- `packages/puf-harness`: Python eta_thermo sim harness
+- `docs`: ADRs, threat model, deployment plan, and local mirrors of Notion outputs
+- `notebooks`: versioned research notebooks generated from the Jupyter skill helper
+
+## Development
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
+pnpm verify
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Useful loops:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm dev:operator-web
+pnpm dev:chatgpt-mcp
+pnpm dev:worker
+pnpm --filter @genesis/genesis-cli install-local
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Python harness:
 
-## Learn More
+```bash
+uv run --project packages/puf-harness pytest packages/puf-harness/tests
+```
 
-To learn more about Next.js, take a look at the following resources:
+Notebook generation:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+python3 scripts/build_notebooks.py
+python3 scripts/check_notebooks.py
+```

@@ -1,0 +1,60 @@
+name: deploy-worker
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/retraining-worker
+    env:
+      STAGING_WORKER_URL: ${{ secrets.STAGING_WORKER_URL }}
+      WORKER_ENVIRONMENT: staging
+      GENESIS_D1_NAME: genesis-seismic-log-staging
+      OPENAI_API_KEY: ${{ secrets.STAGING_OPENAI_API_KEY }}
+      CODEOWNER_SIGNING_KEY: ${{ secrets.STAGING_CODEOWNER_SIGNING_KEY }}
+      SLACK_WEBHOOK_URL: ${{ secrets.STAGING_SLACK_WEBHOOK_URL }}
+      STRIPE_API_KEY: ${{ secrets.STAGING_STRIPE_API_KEY }}
+      STRIPE_METER_EVENT_NAME: ${{ secrets.STAGING_STRIPE_METER_EVENT_NAME }}
+      ROUTER_MODEL: gpt-5-mini
+      ENVIRONMENT: staging
+      ADMIN_WRITE_TOKEN: ${{ secrets.STAGING_ADMIN_WRITE_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.27.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+        working-directory: ../..
+      - run: pnpm --filter @genesis/contracts build
+        working-directory: ../..
+      - run: pnpm --filter @genesis/auth build
+        working-directory: ../..
+      - run: pnpm --filter @genesis/capsule build
+        working-directory: ../..
+      - run: pnpm --filter @genesis/retraining-worker build
+        working-directory: ../..
+      - run: printf '%s' "$OPENAI_API_KEY" | wrangler secret put OPENAI_API_KEY --config wrangler.toml --env staging
+      - run: printf '%s' "$CODEOWNER_SIGNING_KEY" | wrangler secret put CODEOWNER_SIGNING_KEY --config wrangler.toml --env staging
+      - run: printf '%s' "$SLACK_WEBHOOK_URL" | wrangler secret put SLACK_WEBHOOK_URL --config wrangler.toml --env staging
+      - run: printf '%s' "$STRIPE_API_KEY" | wrangler secret put STRIPE_API_KEY --config wrangler.toml --env staging
+      - run: printf '%s' "$STRIPE_METER_EVENT_NAME" | wrangler secret put STRIPE_METER_EVENT_NAME --config wrangler.toml --env staging
+      - run: printf '%s' "$ADMIN_WRITE_TOKEN" | wrangler secret put ADMIN_WRITE_TOKEN --config wrangler.toml --env staging
+      - run: node scripts/provision-and-check.mjs
+      - run: wrangler d1 migrations apply genesis-seismic-log-staging --config wrangler.toml --env staging --remote
+      - run: wrangler deploy --config wrangler.toml --env staging
+      - run: curl -fsSL "$STAGING_WORKER_URL/healthz"
+      - run: |
+          wrangler d1 execute genesis-seismic-log-staging --config wrangler.toml --env staging --remote \
+            --command "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name;"
+      - run: node scripts/emit_deploy_capsule.mjs
+        env:
+          DEPLOY_SERVICE_NAME: genesis-retraining-worker-staging
+          DEPLOY_ROUTE: /deploy
+          DEPLOY_ENDPOINT_URL: ${{ secrets.STAGING_WORKER_URL }}

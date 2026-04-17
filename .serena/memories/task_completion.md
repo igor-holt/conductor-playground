@@ -1,0 +1,1 @@
+After changes, run the repo validation flow: `pnpm verify`. If it fails early, run `pnpm typecheck` and `pnpm test` separately to capture full failure surface. For Python-only changes, also run `uv run --project packages/puf-harness pytest packages/puf-harness/tests`.

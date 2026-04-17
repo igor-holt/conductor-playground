@@ -1,0 +1,1 @@
+Useful commands: `pnpm verify`, `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm dev:operator-web`, `pnpm dev:chatgpt-mcp`, `pnpm dev:worker`, `pnpm --filter @genesis/genesis-cli install-local`, `uv run --project packages/puf-harness pytest packages/puf-harness/tests`, `python3 scripts/check_notebooks.py`, `python3 scripts/secret_scan.py`.

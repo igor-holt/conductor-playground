@@ -1,0 +1,1 @@
+{"keyId":"key-1776452286261","label":"Genesis staging smoke key","tokenHash":"253333067f25ca5429c9bf67f6eeb9228ecf1395e938cb63276b3b8b024421ad","scopes":["a2a:invoke","infer:invoke"],"rateLimitPerMinute":10,"meterEventName":"genesis_tokens","active":true,"createdAt":1776452286261}
