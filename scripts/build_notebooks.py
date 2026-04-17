@@ -1,33 +1,28 @@
 from __future__ import annotations
 
 import json
-import os
-import subprocess
 from pathlib import Path
 
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-CODEX_HOME = Path(os.environ.get("CODEX_HOME", Path.home() / ".codex"))
-NOTEBOOK_SCRIPT = CODEX_HOME / "skills" / "jupyter-notebook" / "scripts" / "new_notebook.py"
 NOTEBOOK_DIR = REPO_ROOT / "notebooks"
 
 
 def scaffold(kind: str, title: str, output_path: Path) -> None:
-    subprocess.run(
-        [
-            "python3",
-            str(NOTEBOOK_SCRIPT),
-            "--kind",
-            kind,
-            "--title",
-            title,
-            "--out",
-            str(output_path),
-            "--force",
-        ],
-        check=True,
-        cwd=REPO_ROOT,
-    )
+    notebook = {
+        "nbformat": 4,
+        "nbformat_minor": 5,
+        "metadata": {
+            "kernelspec": {
+                "display_name": "Python 3",
+                "language": "python",
+                "name": "python3",
+            },
+            "language_info": {"name": "python", "version": "3.11.0"},
+        },
+        "cells": [],
+    }
+    output_path.write_text(json.dumps(notebook, indent=2) + "\n", encoding="utf-8")
 
 
 def write_notebook(path: Path, cells: list[dict[str, object]]) -> None:
