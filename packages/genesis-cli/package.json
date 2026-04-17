@@ -1,0 +1,20 @@
+{
+  "name": "@genesis/genesis-cli",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "genesis-conductor": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts",
+    "lint": "eslint src tests --ext .ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run tests",
+    "install-local": "pnpm run build && node scripts/install-local.mjs"
+  },
+  "dependencies": {
+    "@genesis/contracts": "workspace:*",
+    "commander": "^14.0.1"
+  }
+}

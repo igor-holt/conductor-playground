@@ -1,0 +1,20 @@
+{
+  "convergence": { "standard_cycles": 3, "escalated_cycles": 5 },
+  "eval": {
+    "lenient_pass_ratio": 0.75,
+    "lenient_average": 0.85,
+    "target_words": 100
+  },
+  "metaprompt": {
+    "model": "gpt-5",
+    "min_improvement_floor": 0.02,
+    "max_retries": 3
+  },
+  "regression_watchdog": {
+    "window_cycles": 3,
+    "degrade_threshold": 0.85,
+    "degrade_count_required": 3,
+    "residual_drift_threshold": 0.02
+  },
+  "model_candidates": ["gpt-5", "gpt-5-mini"]
+}

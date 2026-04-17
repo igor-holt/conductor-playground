@@ -1,0 +1,14 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: genesis-chatgpt-mcp
+spec:
+  template:
+    spec:
+      containers:
+        - image: us-central1-docker.pkg.dev/${PROJECT_ID}/genesis/genesis-chatgpt-mcp:latest
+          ports:
+            - containerPort: 2091
+          env:
+            - name: GENESIS_API_BASE_URL
+              value: "${GENESIS_API_BASE_URL}"

@@ -1,0 +1,26 @@
+{
+  "name": "@genesis/retraining-worker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsup src/index.ts src/provision.ts src/scripts/autoRollbackCore.ts --format esm --outDir dist",
+    "dev": "wrangler dev --config wrangler.toml",
+    "lint": "eslint src tests scripts --ext .ts,.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run tests",
+    "test:a2a-tck": "vitest run tests/gates/a2aTck.test.ts",
+    "test:auth-unification": "vitest run tests/gates/authUnification.test.ts",
+    "test:capsule-emission": "vitest run tests/gates/capsuleEmission.test.ts",
+    "test:rate-limit-d1": "vitest run tests/gates/rateLimitD1.test.ts",
+    "test:stripe-idempotency": "vitest run tests/gates/stripeIdempotency.test.ts"
+  },
+  "dependencies": {
+    "@genesis/auth": "workspace:*",
+    "@genesis/capsule": "workspace:*",
+    "@genesis/contracts": "workspace:*"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260410.0"
+  }
+}

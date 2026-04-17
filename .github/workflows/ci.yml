@@ -1,0 +1,119 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.27.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - uses: astral-sh/setup-uv@v6
+      - run: pnpm install --frozen-lockfile
+      - run: python3 scripts/build_notebooks.py
+      - run: pnpm verify
+
+  test_a2a_tck:
+    name: TEST_A2A_TCK
+    runs-on: ubuntu-latest
+    env:
+      STAGING_GENESIS_API_BASE_URL: ${{ secrets.STAGING_GENESIS_API_BASE_URL }}
+      STAGING_GENESIS_API_KEY: ${{ secrets.STAGING_GENESIS_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.27.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @genesis/contracts build
+      - run: pnpm --filter @genesis/auth build
+      - run: pnpm --filter @genesis/capsule build
+      - run: pnpm --filter @genesis/retraining-worker test:a2a-tck
+
+  test_auth_unification:
+    name: TEST_AUTH_UNIFICATION
+    runs-on: ubuntu-latest
+    env:
+      STAGING_GENESIS_API_BASE_URL: ${{ secrets.STAGING_GENESIS_API_BASE_URL }}
+      STAGING_GENESIS_API_KEY: ${{ secrets.STAGING_GENESIS_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.27.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @genesis/contracts build
+      - run: pnpm --filter @genesis/auth build
+      - run: pnpm --filter @genesis/capsule build
+      - run: pnpm --filter @genesis/retraining-worker test:auth-unification
+
+  test_capsule_emission:
+    name: TEST_CAPSULE_EMISSION
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.27.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @genesis/contracts build
+      - run: pnpm --filter @genesis/auth build
+      - run: pnpm --filter @genesis/capsule build
+      - run: pnpm --filter @genesis/retraining-worker test:capsule-emission
+
+  test_rate_limit_d1:
+    name: TEST_RATE_LIMIT_D1
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.27.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @genesis/contracts build
+      - run: pnpm --filter @genesis/auth build
+      - run: pnpm --filter @genesis/capsule build
+      - run: pnpm --filter @genesis/retraining-worker test:rate-limit-d1
+
+  test_stripe_idempotency:
+    name: TEST_STRIPE_IDEMPOTENCY
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.27.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @genesis/contracts build
+      - run: pnpm --filter @genesis/auth build
+      - run: pnpm --filter @genesis/capsule build
+      - run: pnpm --filter @genesis/retraining-worker test:stripe-idempotency

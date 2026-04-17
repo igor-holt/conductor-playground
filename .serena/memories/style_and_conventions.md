@@ -1,0 +1,1 @@
+Root AGENTS/CLAUDE notes: Next.js version may differ from training data, check local Next docs before editing framework code. TypeScript is ESM/NodeNext with strict, noUncheckedIndexedAccess, exactOptionalPropertyTypes. Python package uses typed modules. Security rules forbid hardcoded secrets and require zero-trust validation of env/API/config data.

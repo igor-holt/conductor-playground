@@ -1,0 +1,6 @@
+.context
+coverage
+dist
+node_modules
+notebooks/*.ipynb
+packages/puf-harness/.venv
