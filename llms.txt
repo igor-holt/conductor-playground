@@ -1,0 +1,17 @@
+# Conductor Playground — Genesis Conductor
+
+> Experimental playground for Genesis Conductor development.
+> Testing ground for AI Architecture patterns by Igor Holt.
+
+## Purpose
+- Prototype new Genesis Conductor features
+- Test A2A protocol implementations
+- Experiment with MCP server patterns
+
+## Related
+- Genesis Conductor: https://github.com/Genesis-Conductor-Engine/Genesis-Conductor
+- Ambient Access Layer: https://optimization-inversion.genesisconductor.io
+
+## Creator
+Igor Holt — AI Architect
+https://genesisconductor.io
