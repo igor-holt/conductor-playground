@@ -1,0 +1,51 @@
+{
+  "$schema": "https://www.schemastore.org/schemas/json/claude-code-marketplace.json",
+  "name": "genesis-conductor-playground",
+  "owner": {
+    "name": "Igor Holt (@invariantx)",
+    "email": "iholt@mymail.aacc.edu",
+    "url": "https://github.com/igor-holt"
+  },
+  "description": "Genesis Conductor experimental monorepo and phase-1 delivery playground by Igor Holt (@invariantx). Integrated Cloudflare retraining worker with prompt ledger state, proposer/watchdog logic and rollback audit; typed genesis-conductor CLI as the sole write surface; read-only ChatGPT MCP app and Next.js 16 operator dashboard on shared Zod contracts; sim-first eta_thermo harness with hash-only artifact emission for thermodynamic verification. Includes local docs, ADRs, threat models, Jupyter notebooks, and full CI/deployment scaffolding. Foundational experimental surface for OpenClaw / ClawHub skill development, MCP server prototyping, autonomous agent orchestration patterns, and Genesis Conductor Engine primitives (persistent state, A2A coordination, energy-aware compute). Directly informs production bundles like openclaw-skills.",
+  "version": "1.0.0",
+  "homepage": "https://github.com/igor-holt/conductor-playground",
+  "keywords": [
+    "genesis-conductor",
+    "conductor-playground",
+    "igor-holt",
+    "invariantx",
+    "cloudflare-retraining-worker",
+    "eta-thermo-harness",
+    "genesis-cli",
+    "chatgpt-mcp",
+    "operator-dashboard",
+    "thermodynamic-verification",
+    "prompt-ledger",
+    "rollback-audit",
+    "mcp-server-prototyping",
+    "agent-orchestration",
+    "openclaw",
+    "clawhub",
+    "a2a-coordination",
+    "claude-code-marketplace",
+    "autonomous-agents",
+    "energy-aware-compute"
+  ],
+  "plugins": [
+    {
+      "name": "conductor-playground",
+      "source": "https://github.com/igor-holt/conductor-playground",
+      "description": "Full Genesis Conductor phase-1 monorepo enabling rapid experimentation with retraining workers, MCP surfaces, CLI tooling, and thermodynamic simulation harnesses. Powers early validation of persistent memory, audit trails, and agent reliability patterns that ship in the official OpenClaw skills trio and production MCP servers.",
+      "version": "1.0.0",
+      "tags": ["monorepo", "experimentation", "thermodynamic", "mcp-prototyping", "genesis-conductor", "cli-tooling"],
+      "category": "agent-infrastructure",
+      "homepage": "https://github.com/igor-holt/conductor-playground",
+      "keywords": ["genesis conductor playground", "eta thermo harness", "cloudflare retraining worker", "mcp operator dashboard", "agentic experimentation platform"]
+    }
+  ],
+  "links": {
+    "x": "https://x.com/invariantx",
+    "website": "https://genesisconductor.io",
+    "github": "https://github.com/igor-holt/conductor-playground"
+  }
+}
