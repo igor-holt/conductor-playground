@@ -4,7 +4,9 @@ version = "0.1.0"
 description = "Sim-first eta_thermo harness with hash-only artifact emission"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "pygments==2.21.0",
+]
 
 [dependency-groups]
 dev = [
